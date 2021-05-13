@@ -1,17 +1,30 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import { render } from "react-dom";
+import { createStore, applyMiddleware, compose  } from "redux";
+import { Provider } from "react-redux";
+import thunk from "redux-thunk";
+import {
+  ThemeProvider
+} from "@material-ui/core";
+// import StyledEngineProvider from '@material-ui/core/StyledEngineProvider';
+import reducer from "./components/redux/reducers";
+import App from "./App";
+import theme from './theme';
+import './index.css'
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+require("dotenv").config();
+
+const middleware = [thunk];
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(reducer, composeEnhancers(applyMiddleware(...middleware)));
+
+render(
+  <ThemeProvider theme={theme}>
+    <Provider store={store}>
+        <App />
+    </Provider>
+  </ThemeProvider>,
+
+  document.getElementById("root")
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

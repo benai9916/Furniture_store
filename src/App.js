@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from "react";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 
-function App() {
+import Navbar from './components/Navbar/Navbar'
+import AddProducts from './components/Products/Products';
+import Footer from './components/Footer/Footer';
+import PageNotFound from './components/PageNotFound';
+
+
+const App = () => {
+  const [search, setSearch] = useState("");
+
+  // search
+  const searchProduct = (e) => {
+    setSearch(e.target.value)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <div>
+        <Navbar setSearch={setSearch}
+        searchProduct={searchProduct}/>
+          <Switch>
+                <Route path="/" exact  render={() => ( <AddProducts search={search} />)} />
+                <Route component={PageNotFound}/>
+          </Switch>
+          <Footer />
+      </div>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
